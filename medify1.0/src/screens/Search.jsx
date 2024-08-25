@@ -56,9 +56,11 @@ const Search = () => {
               >
                 Take Appointment
               </button>
+              
             </div>
           ))}
         </div>
+        <h7><a href="/" style={{fontSize: "8px"}}>Go Back To Home</a></h7>
       </div>
     </div>
   );

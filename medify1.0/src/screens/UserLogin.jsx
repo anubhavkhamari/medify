@@ -1,6 +1,6 @@
 // src/components/UserLogin.js
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,12 +11,19 @@ const UserLogin = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  onAuthStateChanged(auth, (user)=>{
+    if (user) {
+      localStorage.setItem('uid', user.uid);
+      navigate('/search');
+    }
+  })
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Login successful');
-      navigate('/search');
+      
     } catch (error) {
       toast.error('Failed to login');
     }

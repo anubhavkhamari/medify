@@ -20,6 +20,7 @@ import UserLogin from './screens/UserLogin';
 import Search from './screens/Search';
 import Book from './screens/Book';
 import AppointmentDetails from './screens/AppointmentDetails';
+import Myappointments from './screens/Myappointments';
 
 
 function App() {
@@ -51,6 +52,7 @@ transition={Bounce}
       <Route path="/search" element={<Search />} />
       <Route path="/appointment/:id" element={<Book />} />
       <Route path="/myappointment/:id" element={<AppointmentDetails />} />
+      <Route path="/myappointments" element={<Myappointments />} />
       {/* <Route path="/signupdoctor" element={<DoctorOnboarding />} /> */}
       {/* <Route path="/loginuser" element={<UserLogin />} />
       <Route path="/logindoctor" element={<DoctorLogin />} />

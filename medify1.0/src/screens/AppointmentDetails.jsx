@@ -8,6 +8,7 @@ const AppointmentDetails = () => {
   const { id } = useParams();
   const [appointment, setAppointment] = useState(null);
   const contentRef = useRef();
+  const uuid = localStorage.getItem('uid');
 
   useEffect(() => {
 
@@ -31,34 +32,58 @@ const AppointmentDetails = () => {
     content: () => contentRef.current,
   });
 
-  if (!appointment) return <div>Loading...</div>;
+  const handleMarkAsDone = async (id) => {
 
+  }
+
+  if (!appointment) return <div>Loading...</div>;
+ const datas = [
+  {first : "Hospital : ", second : appointment.hospital},
+  {first : "Doctor's Contact : ", second : appointment.contact},
+  {first : "Patient Name : ", second : appointment.patientName},
+  {first : "Appointment Date : ", second : appointment.appointmentDate},
+  {first : "Serial No : ", second : appointment.slot},
+ ]
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 ">
       <div className="bg-white p-10 rounded-lg shadow-md w-full max-w-lg" ref={contentRef}>
 
-        <h1 className="text-3xl font-bold mb-6 text-center">Appointment Details</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center"><u>Appointment Details</u></h1>
         <div className="mb-6">
-        <i className="fa fa-download fa-beat text-xl scale-100 transition duration-300 ease-in-out" aria-hidden="true" onClick={handlePrint} />
+          {/* <i className="fa fa-download fa-beat text-xl scale-100 transition duration-300 ease-in-out" aria-hidden="true" onClick={handlePrint} /> */}
           <h2 className="text-2xl font-bold">Doctor: Dr. {appointment.doctorName}</h2>
-          <p className="text-gray-700">Hospital: {appointment.hospital}</p>
-          <p className="text-gray-700">Doctor's Contact: {appointment.contact}</p>
-
-          <p className="text-gray-700">Patient Name: {appointment.patientName}</p>
-
-          <p className="text-gray-700">Date: {appointment.appointmentDate}</p>
-
-          <p className="text-gray-700">Serial No: <b>{appointment.slot}</b></p>
+          {
+              datas.map((d)=>{
+                return (
+                  <>
+                  <p className="text-gray-700">{d.first}{d.second}</p>
+                  </>
+                )
+              })
+            }
+          
           <p className="text-gray-700">
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={"value"}
+              value={`http://localhost:3000/myappointment/${id}`}
               viewBox={`0 0 256 256`}
             />
           </p>
-          <p className="text-gray-700">
-          
+          <p className="text-gray-700" style={{display: "flex"}}>
+          <button
+              className="w-full mt-5 mr-1 bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
+              onClick={()=>{handlePrint()}}
+            >
+              Download
+            </button>
+              
+            {/* <button
+              className="w-full mt-5 ml-1 bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
+              onClick={() => handleMarkAsDone(appointment._id)}
+            >
+              DONE
+            </button> */}
           </p>
 
         </div>

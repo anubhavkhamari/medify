@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 const navigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Find A Doctor', href: '/search', current: false },
+    { name: 'Appointments', href: '/myappointments', current: false },
   ]
 
 function classNames(...classes) {
@@ -106,12 +107,17 @@ function NavBasic(prop) {
                   ))}
                 </div>
                 <div className="py-6">
-                  <a
-                    href="/login"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    {prop.action}
-                  </a>
+                  {
+                    prop.action === "Log in" ?
+                    <a href='/login' className="text-sm font-semibold leading-6 text-gray-900
+                    ">Log in </a>
+                    :
+                    <>
+                    <button className="text-sm font-semibold leading-6 text-gray-900" onClick={()=>{
+                      handleLogout()
+                      }}>Log Out</button>
+                    </>
+                  }
                 </div>
               </div>
             </div>

@@ -2,20 +2,35 @@
 import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import auth from "../firebaseD.js";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Appointment = () => {
     const { uid } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
     const { doctor } = location.state;
+    const [ user, setUser ] = useState('');
+
+    onAuthStateChanged(auth, (user) => {
+        if(!user){
+            navigate('/login');
+        }
+        else{
+            localStorage.setItem('uid', user.uid);
+        }
+    })
 
     const [appointmentData, setAppointmentData] = useState({
         doctorCode: doctor._id,
+        doctorUID : doctor.uid,
         doctorName: doctor.name,
         hospital: doctor.hospital,
         contact: doctor.contact,
         patientName: "",
+        email: '',
         appointmentDate: '',
+        owner: localStorage.getItem('uid'),
     });
 
     const handleChange = (e) => {
@@ -63,6 +78,17 @@ const Appointment = () => {
                             name="patientName"
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={appointmentData.patientName}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={appointmentData.email}
                             onChange={handleChange}
                             required
                         />

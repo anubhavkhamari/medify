@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const appointmentschema = new mongoose.Schema({
     patientName: { type: String, require: true },
+    owner: { type: String, require: true },
     doctorCode: { type: String, require: true },
+    doctorUID: { type: String, require: true },
     doctorName: { type: String, require: true },
     hospital: { type: String, require: true },
     contact: { type: String, require: true },

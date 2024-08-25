@@ -18,7 +18,7 @@ mongoose.connect("mongodb://localhost/medify")
 }).catch((err) => {
     console.log(err.message)                   
 });
-
+ 
 app.use(cors());
 app.use(express.json());
 app.use(methodOverride('_method'));
@@ -28,5 +28,5 @@ app.use("/api/doc", docRouter);
 app.use("/api/appointment", apntRouter)      
 
 app.listen(5001, ()=>{
-    console.log(`server running at http:///localhost:${5001}`)
+    console.log(`server running at http:///localhost:${5001}`) 
 })

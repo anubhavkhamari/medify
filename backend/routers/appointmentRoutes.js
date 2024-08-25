@@ -15,13 +15,14 @@ apntRouter.get("/", (req, res) => {
 const transporter = nodeMailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'anubhavkhamari002@gmail.com',
-        pass: 'qespe1-xugvof-voJtej'
-    }
-})
+      user: 'anubhavkhamarivssut@gmail.com',
+      pass: 'bout rsey urpq agdc', // Use app password if 2FA is enabled
+    },
+  });
 
 apntRouter.post("/", async (req, res) => {
     try {
+        console.log(req.body)
         const { doctorCode, date } = req.body;
 
         // Count existing appointments for the doctor on the same date
@@ -33,31 +34,33 @@ apntRouter.post("/", async (req, res) => {
 
         res.status(201).json({ serialNo: savedAppointment.serialNo, appointment: savedAppointment });
 
+        const sendAppointmentEmail = async (patientEmail) => {
+            const mailOptions = {
+              from: 'anubhavkhamarivssut@gmail.com',
+              to: patientEmail,
+              subject: 'Your Appointment Details',
+              html: `
+                <h1>Your Appointment Details</h1>
+                <p>
+                <p><strong>Doctor:</strong> Dr. ${savedAppointment.doctorName}</p>
+                <p><strong>Date:</strong> ${savedAppointment.appointmentDate}</p>
+                <p><strong>Hospital:</strong> ${savedAppointment.hospital}</p>
+                <p><strong>Patient Name:</strong> ${savedAppointment.patientName}</p>
+                <p>Thank you,<br>Medify</p>
+                <p>
+              `,
+            };
+          
+            try {
+              await transporter.sendMail(mailOptions);
+              console.log('Email sent successfully');
+            } catch (error) {
+              console.error('Error sending email:', error);
+            }
+          };
 
         if (savedAppointment) {
-            const mailConfigurations = {
-
-                // It should be a string of sender email
-                from: 'anubhavkhamari002@gmail.com',
-
-                // Comma Separated list of mails
-                to: 'anubhavkhamarivssut@gmail.com',
-
-                // Subject of Email
-                subject: 'Sending Email using Node.js',
-
-                // This would be the text of email body
-                text: 'Hi! There, You know I am using the'
-                    + ' NodeJS Code along with NodeMailer '
-                    + 'to send this email.'
-            };
-
-            transporter.sendMail(mailConfigurations, function (error, info) {
-                if (error) throw Error(error);
-                console.log('Email Sent Successfully');
-                console.log(info);
-            });
-
+            sendAppointmentEmail(req.body.email);   
         }
     } catch (error) {
         res.status(500).json({ message: 'Error booking appointment', error });
@@ -96,6 +99,18 @@ apntRouter.post("/update/:id", (req, res) => {
         }
     })
 
+})
+
+apntRouter.get("/find/:owner", (req, res) => {
+    const owner = req.params.owner;
+    //find all appointments for same owner
+    Appointment.find({ owner: owner }).then((apnt) => {
+        if (apnt) {
+            res.json(apnt);
+        } else {
+            res.status(404).json({ message: "Appointment not found" });
+        }
+    })
 })
 
 module.exports = apntRouter;
