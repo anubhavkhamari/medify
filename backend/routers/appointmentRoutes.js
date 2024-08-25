@@ -15,8 +15,8 @@ apntRouter.get("/", (req, res) => {
 const transporter = nodeMailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'anubhavkhamarivssut@gmail.com',
-      pass: 'bout rsey urpq agdc', // Use app password if 2FA is enabled
+      user: '{mail}@gmail.com',
+      pass: '***', // Use app password if 2FA is enabled
     },
   });
 
@@ -36,7 +36,7 @@ apntRouter.post("/", async (req, res) => {
 
         const sendAppointmentEmail = async (patientEmail) => {
             const mailOptions = {
-              from: 'anubhavkhamarivssut@gmail.com',
+              from: 'mail@gmail.com',
               to: patientEmail,
               subject: 'Your Appointment Details',
               html: `
